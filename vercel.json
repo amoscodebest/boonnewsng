@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/reader.html",
+      "destination": "/api/og"
+    }
+  ]
+}
