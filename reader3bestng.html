@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title id="metaTitle">Loading Article... | BoonNews</title>
+    <meta name="title" id="metaTitleTag" content="Loading Article... | BoonNews">
+    <meta name="description" id="metaDesc" content="Read full news articles, analysis, and breaking updates on BoonNews.">
+    <meta name="keywords" id="metaKeywords" content="BoonNews, news, breaking news, articles, insights, blog">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" id="metaCanonical" href="https://boonnewsng.vercel.app/reader.html">
+
+    <!-- Open Graph / WhatsApp / Facebook / LinkedIn -->
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="BoonNews">
+    <meta property="og:url" id="ogUrl" content="https://boonnewsng.vercel.app/reader.html">
+    <meta property="og:title" id="ogTitle" content="BoonNews Article">
+    <meta property="og:description" id="ogDesc" content="Read full news articles, analysis, and breaking updates on BoonNews.">
+    <meta property="og:image" id="ogImage" content="https://boonnewsng.vercel.app/boon-news-og-banner.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" id="twUrl" content="https://boonnewsng.vercel.app/reader.html">
+    <meta name="twitter:title" id="twTitle" content="BoonNews Article">
+    <meta name="twitter:description" id="twDesc" content="Read full news articles, analysis, and breaking updates on BoonNews.">
+    <meta name="twitter:image" id="twImage" content="https://boonnewsng.vercel.app/boon-news-og-banner.jpg">
+
+    <!-- Schema.org JSON-LD Structured Data -->
+    <script type="application/ld+json" id="articleSchema">
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "headline": "Read Article",
+      "image": ["https://boonnewsng.vercel.app/boon-news-og-banner.jpg"],
+      "publisher": {
+        "@type": "Organization",
+        "name": "BoonNews",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://boonnewsng.vercel.app/boon-news-og-banner.jpg"
+        }
+      }
+    }
+    </script>
+    
+    
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Oswald:wght@200..700&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="readerng.css">
+    
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="navbar">
+            <button class="header-icon-btn" id="openDrawerBtn" aria-label="Open Navigation Drawer">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            
+            <div class="brand-logo-container">
+                <a href="index.html" class="brand-logo">Boon <span>News</span></a>
+            </div>
+
+            <button class="header-icon-btn" id="toggleSearchBtn" aria-label="Toggle Search Bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+
+        <div class="search-expand-bar" id="searchBar">
+            <form class="search-form-inner" onsubmit="event.preventDefault(); alert('Executing query search...');">
+                <input type="text" class="form-input-control" placeholder="Type keywords and hit enter to search..." required>
+                <button type="submit" class="form-submit-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+        </div>
+    </header>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="drawer-nav" id="drawerNav">
+        <div class="drawer-header">
+            <a href="#" class="brand-logo" style="font-size: 1.3rem;">Boon <span>News</span></a>
+            <button class="header-icon-btn" id="closeDrawerBtn" aria-label="Close Drawer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <nav class="drawer-links">
+            <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="about.html"><i class="fa-solid fa-fire"></i> About us</a>
+            <a href="advert.html"><i class="fa-solid fa-landmark"></i> Advertise with Us</a>
+            
+            <a href="#"><i class="fa-solid fa-envelope"></i> Contact Us</a>
+        </nav>
+    </aside>
+
+    <div class="app-container">
+        <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+            <a href="index.html">Home</a>
+            <i class="fa-solid fa-chevron-right breadcrumb-separator"></i>
+            <a href="#" id="breadcrumbCategory">Category</a>
+            <i class="fa-solid fa-chevron-right breadcrumb-separator"></i>
+            <span class="breadcrumb-current" id="breadcrumbTitle">Loading Story...</span>
+        </nav>
+
+        <div class="main-layout-grid">
+            
+            <div class="content-stream">
+                <main class="post-card">
+                    <div class="post-meta-header">
+                        <div class="meta-left">
+                            <span class="category-badge" id="articleCategory">General</span>
+                        </div>
+                    </div>
+
+                    <h1 class="post-title" id="articleTitle">Loading Story...</h1>
+                    
+                    <div class="author-socials">
+                        <a href="#" id="shareWA" target="_blank" rel="noopener noreferrer" class="author-social-link" title="Share on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+
+                       <a href="#" id="shareTW" target="_blank" rel="noopener noreferrer" class="author-social-link" title="Share on X"><i class="fa-brands fa-x-twitter"></i></a>
+                      
+                        <a href="#" id="shareFB" target="_blank" rel="noopener noreferrer" class="author-social-link" title="Share on Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                       
+                        
+                        <a href="#" id="shareLN" target="_blank" rel="noopener noreferrer" class="author-social-link" title="Share on LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                      
+                        <button class="author-social-link" onclick="copyArticleLink('copyBtnText')" title="Copy Link">
+                                
+                             <span id="copyBtnText"><i class="fa-solid fa-link"></i></span>
+                            </button>
+                    </div>
+        
+                    <div class="author-panel">
+                        <div class="author-main-row">
+                            <div class="author-info">
+                                <div class="author-avatar" id="authorAvatar">By</div>
+                                <div class="author-details">
+                                    <div class="author-name" id="authorName">Boon Reporter</div>
+                                    <div class="author-role" id="authorRole">Editor & Journalist</div>
+                                </div>
+                            </div>
+                            <button class="bookmark-btn" id="bookmarkBtn" onclick="toggleBookmark()" title="Bookmark Post">
+                                <i class="fa-regular fa-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="media-container" id="mediaContainer">
+                      <div style="display: flex; justify-content: center; align-items: center; height: 100%; color: #64748b;">
+                            <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+                        </div>
+                    </div>
+                        
+
+                    <div class="post-meta-header">
+                        <div class="article-meta-tags">
+                            <span class="meta-item-tag"><i class="fa-regular fa-calendar"></i> <span id="articleDate"</span></span>
+                            <span class="meta-item-tag"><i class="fa-solid fa-clock"></i><span id="articleReadTime">1</span> min read</span>
+                            <span class="meta-item-tag"><i class="fa-solid fa-eye"></i><span id="articleViews">0</span>k</span>
+                        </div>
+                    </div>
+
+                    <article class="article-body" id="articleBody">
+                      <p class="article-summary-lead" id="articleSummary"></p>
+                        <div id="articleContent">
+                            Loading article text...
+                        </div>
+                        
+                        
+                    </article>
+
+                    <div class="tag-cloud" id="articleTags">
+                        <span class="tag-item">#News</span>
+                        <span class="tag-item">#Updates</span>
+                       
+                    </div>
+
+                    <div class="share-section">
+                        <div class="share-title">Share this article</div>
+                        <div class="share-buttons">
+ <button class="share-icon-btn wa whatsapp" id="shareWABottom" target="_blank" rel="noopener noreferrer" title="Share on WhatsApp">
+                                <i class="fa-brands fa-whatsapp"></i> 
+                            </button>    
+
+<button class="share-icon-btn tw twitter" id="shareTWBottom" target="_blank" rel="noopener noreferrer" title="Share on X">
+                                <i class="fa-brands fa-x-twitter"></i> 
+                            </button>                          
+                          <button class="share-icon-btn fb facebook" id="shareFBBottom" target="_blank" rel="noopener noreferrer" title="Share on Facebook">
+                                <i class="fa-brands fa-facebook-f"></i> 
+                            </button>
+                                  <button class="share-icon-btn copy" onclick="copyArticleLink('copyBtnTextBottom')" title="Copy Link">
+                                <i class="fa-solid fa-link"></i> <span id="copyBtnTextBottom">Copy Link</span>
+                            </button>
+                        </div>
+                    </div>
+                </main>
+
+                <section class="newsletter-card">
+                    <div class="newsletter-header">
+                        <h4 class="newsletter-title">Our Newsletter</h4>
+                        <p class="newsletter-subtitle">Get breaking news, featured analyses, and daily roundups straight to your inbox.</p>
+                    </div>
+                    <form class="newsletter-form" id="newsletterForm">
+                        <input type="email" placeholder="Enter your email address" class="form-input-control" style="flex: 1;" required>
+                        <button type="submit" class="form-submit-btn">Subscribe</button>
+                    </form>
+                  <div id="newsletterSuccess" style="display:none; font-size: 13px; color: #16a34a; font-weight: 500;">Thanks for subscribing! Check your inbox soon.</div>
+                </section>
+            </div>
+
+            <aside class="sidebar-stream">
+                <div class="sidebar-card">
+                    <h2>Related News</h2>
+                    <div id="relatedContainer">
+                        <p style="font-size:13px; color:#64748b;">Loading related stories...</p>
+                    </div>
+                </div>
+                    
+              
+
+                <div class="sidebar-card">
+                    <h2>Trending Topics</h2>
+                    <div class="tag-cloud" style="border-top: none; padding-top: 0; margin-top: 0;">
+                        <a href="index.html?tag=AI" class="tag-item">AI</a>
+                        <a href="index.html?tag=Crypto" class="tag-item">Crypto</a>
+                        <a href="index.html?tag=Startups" class="tag-item">Startups</a>
+                        <a href="index.html?tag=Tech" class="tag-item">Tech</a>
+                        <a href="index.html?tag=Business" class="tag-item">Business</a>
+                        <a href="index.html?tag=Sports" class="tag-item">Sports</a>
+                        <a href="index.html?tag=Politics" class="tag-item">Politics</a>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+  <div class="toast-notification" id="toast">Link copied to clipboard!</div>
+
+    <footer class="app-footer">
+        <div class="footer-content">
+            <h2 class="brand-logo" style="color: #ffffff; font-size: 22px;">Boon <span>News</span></h2>
+            
+            <div class="footer-social-block">
+                <span class="footer-social-heading">Follow Us</span>
+                <div class="footer-social-icons">
+                    <a href="https://www.facebook.com/profile.php?id=61570604278953" target="_blank" class="footer-social-btn" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+              <a href="https://youtube.com/@boonnews?si=5KrPL-0vLmUCj4Ny" target="_blank" class="footer-social-btn" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>    
+                    <a href="https://x.com" target="_blank" class="footer-social-btn" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+                    
+                    <a href="https://linkedin.com" target="_blank" class="footer-social-btn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <a href="#">About Us</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Us</a>
+            </div>
+            
+            <p style="font-size: 12px; color: #64748b; margin-top: 8px;">© 2026 Boon News Platforms. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Drawer Navigation Logic
+        const openDrawerBtn = document.getElementById('openDrawerBtn');
+        const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+        const drawerNav = document.getElementById('drawerNav');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        function toggleDrawer() {
+            drawerNav.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+        }
+
+        openDrawerBtn.addEventListener('click', toggleDrawer);
+        closeDrawerBtn.addEventListener('click', toggleDrawer);
+        sidebarOverlay.addEventListener('click', toggleDrawer);
+
+        // Search Bar Toggle Logic
+        const toggleSearchBtn = document.getElementById('toggleSearchBtn');
+        const searchBar = document.getElementById('searchBar');
+
+        toggleSearchBtn.addEventListener('click', () => {
+            searchBar.classList.toggle('active');
+        });
+      
+  function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+      
+        // Bookmark Logic
+        function toggleBookmark() {
+            const btn = document.getElementById('bookmarkBtn');
+            btn.classList.toggle('active');
+            const icon = btn.querySelector('i');
+            if(btn.classList.contains('active')) {
+                icon.className = 'fa-solid fa-bookmark';
+            } else {
+                icon.className = 'fa-regular fa-bookmark';
+            }
+        }
+
+     
+        // Top Scroll Progress Bar
+        const progressBar = document.createElement('div');
+        progressBar.style.position = 'fixed';
+        progressBar.style.top = '0';
+        progressBar.style.left = '0';
+        progressBar.style.height = '4px';
+        progressBar.style.background = '#e11d48';
+        progressBar.style.width = '0%';
+        progressBar.style.zIndex = '9999';
+        document.body.appendChild(progressBar);
+
+        window.addEventListener('scroll', () => {
+            let scrollTop = document.documentElement.scrollTop;
+            let scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let progress = (scrollTop / scrollHeight) * 100;
+            progressBar.style.width = progress + '%';
+        });
+      
+    window.copyArticleLink = (targetLabelId) => {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                showToast("Article link copied to clipboard!");
+                if (targetLabelId) {
+                    const labelEl = document.getElementById(targetLabelId);
+                    if (labelEl) {
+                        const originalText = labelEl.innerText;
+                        labelEl.innerText = "Copied!";
+                        setTimeout(() => { labelEl.innerText = originalText; }, 2000);
+                    }
+                }
+            }).catch(err => {
+                console.error("Could not copy link: ", err);
+            });
+        };
+    </script>
+  
+
+    <!-- Firebase Firestore Integration -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
+        import { 
+            getFirestore, doc, getDoc, collection, getDocs, query, where, limit, updateDoc, increment 
+        } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBfoxEnVep0wX5V_KVS-cd8o5sUMvrFY4c",
+            authDomain: "primeintelmedia-e2fe3.firebaseapp.com",
+            databaseURL: "https://primeintelmedia-e2fe3-default-rtdb.firebaseio.com",
+            projectId: "primeintelmedia-e2fe3",
+            storageBucket: "primeintelmedia-e2fe3.firebasestorage.app",
+            messagingSenderId: "228866357632",
+            appId: "1:228866357632:web:72dc9942f1cd41d857a965",
+            measurementId: "G-G0HRRV932S"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const FALLBACK_IMG = 'https://boonnewsng.vercel.app/boon-news-og-banner.jpg';
+
+        function getEmbedUrl(url) {
+            if (!url) return '';
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) 
+                ? `https://www.youtube.com/embed/${match[2]}` 
+                : url;
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
+
+        // Check local storage for bookmark state
+        function initBookmarkState() {
+            if (!postId) return;
+            const bookmarks = JSON.parse(localStorage.getItem('boon_bookmarks') || '[]');
+            const btn = document.getElementById('bookmarkBtn');
+            if (btn && bookmarks.includes(postId)) {
+                btn.classList.add('active');
+            }
+        }
+
+        window.toggleBookmark = () => {
+            if (!postId) return;
+            let bookmarks = JSON.parse(localStorage.getItem('boon_bookmarks') || '[]');
+            const btn = document.getElementById('bookmarkBtn');
+            
+            if (bookmarks.includes(postId)) {
+                bookmarks = bookmarks.filter(id => id !== postId);
+                if (btn) btn.classList.remove('active');
+                showToast("Removed from bookmarks.");
+            } else {
+                bookmarks.push(postId);
+                if (btn) btn.classList.add('active');
+                showToast("Added to bookmarks!");
+            }
+            localStorage.setItem('boon_bookmarks', JSON.stringify(bookmarks));
+        };
+
+        // Estimate reading time from text body
+        function calculateReadingTime(text) {
+            const wordsPerMinute = 200;
+            const cleanText = text.replace(/<[^>]*>/g, '');
+            const words = cleanText.trim().split(/\s+/).length;
+            return Math.max(1, Math.ceil(words / wordsPerMinute));
+        }
+
+        async function loadArticle() {
+            if (!postId) {
+                document.getElementById("articleTitle").textContent = "Article Not Found";
+                document.getElementById("articleContent").textContent = "No post ID specified in URL parameter.";
+                return;
+            }
+
+            initBookmarkState();
+
+            try {
+                const docRef = doc(db, "newsPosts", postId);
+                const docSnap = await getDoc(docRef);
+
+                if (!docSnap.exists()) {
+                    document.getElementById("articleTitle").textContent = "Article Not Found";
+                    document.getElementById("articleContent").textContent = "The requested story does not exist or has been removed.";
+                    return;
+                }
+
+                const post = docSnap.data();
+
+                // Increment View Counter in Firestore
+                updateDoc(docRef, { views: increment(1) }).catch(e => console.warn("View increment failed", e));
+
+                // Process Article Data
+                const title = post.title || 'Untitled Article';
+                const category = post.category || 'General';
+                const summary = post.summary || (post.content ? post.content.replace(/<[^>]*>?/gm, '').substring(0, 155) : 'Read article on BoonNews.');
+                const content = post.content || `<p>${summary}</p>`;
+                const views = (post.views || 0) + 1;
+                const readTime = post.minutesRead || calculateReadingTime(content);
+                const author = post.authorName || post.author || 'Editorial';
+                
+                let dateStr = 'Recently';
+                if (post.createdAt) {
+                    const rawTime = post.createdAt.toMillis ? post.createdAt.toMillis() : (post.createdAt.toDate ? post.createdAt.toDate() : post.createdAt);
+                    dateStr = new Date(rawTime).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                }
+
+                // Render Text Content
+                document.getElementById("articleTitle").textContent = title;
+                document.getElementById("articleCategory").textContent = category;
+                document.getElementById("breadcrumbCategory").textContent = category;
+                document.getElementById("breadcrumbCategory").href = `index.html?category=${encodeURIComponent(category)}`;
+                document.getElementById("breadcrumbTitle").textContent = title;
+                
+                if (summary) {
+                    document.getElementById("articleSummary").textContent = summary;
+                } else {
+                    document.getElementById("articleSummary").style.display = "none";
+                }
+
+                document.getElementById("articleContent").innerHTML = content;
+                document.getElementById("articleViews").textContent = views.toLocaleString();
+                document.getElementById("articleReadTime").textContent = readTime;
+                document.getElementById("articleDate").textContent = dateStr;
+
+                // Render Author Details
+                document.getElementById("authorName").textContent = author;
+                if (post.authorImageUrl) {
+                    document.getElementById("authorAvatar").innerHTML = `<img src="${post.authorImageUrl}" alt="${author}">`;
+                } else {
+                    const initials = author.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+                    document.getElementById("authorAvatar").textContent = initials;
+                }
+                if (post.authorRole) {
+                    document.getElementById("authorRole").textContent = post.authorRole;
+                }
+
+                // Render Dynamic Tags
+                if (post.tags && Array.isArray(post.tags) && post.tags.length > 0) {
+                    document.getElementById("articleTags").innerHTML = post.tags.map(t => `<a href="index.html?tag=${encodeURIComponent(t)}" class="tag-item">#${t}</a>`).join('');
+                } else {
+                    document.getElementById("articleTags").innerHTML = `<a href="index.html?category=${encodeURIComponent(category)}" class="tag-item">#${category}</a><span class="tag-item">#News</span>`;
+                }
+
+                // SEO & Schema Updates
+                setupSEO(title, summary, post.imageUrl, category, author);
+
+                // Render Featured Media (Video / Image)
+                const mediaContainer = document.getElementById("mediaContainer");
+                if (post.videoUrl || post.postType === 'video') {
+                    const embedUrl = getEmbedUrl(post.videoUrl);
+                    mediaContainer.innerHTML = `
+                        <div class="video-responsive">
+                            <iframe src="${embedUrl}" allowfullscreen title="Video player"></iframe>
+                        </div>`;
+                } else {
+                    const imgUrl = post.imageUrl || FALLBACK_IMG;
+                    mediaContainer.innerHTML = `<img class="article-featured-img" src="${imgUrl}" alt="${title}" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">`;
+                }
+
+                // Bind Social Share Links across Top & Bottom toolbars
+                setupShareLinks(title);
+
+                // Load Related Articles
+                fetchRelatedArticles(category, postId);
+
+            } catch (err) {
+                console.error("Error reading article:", err);
+                document.getElementById("articleTitle").textContent = "Error Loading Article";
+                document.getElementById("articleContent").textContent = "An error occurred while loading this post. Please check your internet connection.";
+            }
+        }
+
+        function setupSEO(title, summary, imageUrl, category, author) {
+            const pageUrl = window.location.href;
+            const cleanTitle = `${title} | BoonNews`;
+            const cleanDesc = summary || "Read this article on BoonNews.";
+            const img = imageUrl || FALLBACK_IMG;
+
+            document.title = cleanTitle;
+
+            const setMeta = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.setAttribute("content", val);
+            };
+
+            setMeta("metaTitleTag", cleanTitle);
+            setMeta("metaDesc", cleanDesc);
+            setMeta("metaKeywords", `${category}, news, updates, articles, BoonNews`);
+
+            setMeta("ogUrl", pageUrl);
+            setMeta("ogTitle", cleanTitle);
+            setMeta("ogDesc", cleanDesc);
+            setMeta("ogImage", img);
+
+            setMeta("twUrl", pageUrl);
+            setMeta("twTitle", cleanTitle);
+            setMeta("twDesc", cleanDesc);
+            setMeta("twImage", img);
+
+            const canonical = document.getElementById("metaCanonical");
+            if (canonical) canonical.setAttribute("href", pageUrl);
+
+            // Update Schema.org JSON-LD
+            const schemaEl = document.getElementById("articleSchema");
+            if (schemaEl) {
+                schemaEl.textContent = JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "NewsArticle",
+                    "headline": title,
+                    "image": [img],
+                    "description": cleanDesc,
+                    "author": {
+                        "@type": "Person",
+                        "name": author
+                    },
+                    "publisher": {
+                        "@type": "Organization",
+                        "name": "BoonNews",
+                        "logo": {
+                            "@type": "ImageObject",
+                            "url": "https://boonnewsng.vercel.app/boon-news-og-banner.jpg"
+                        }
+                    }
+                });
+            }
+        }
+
+        function setupShareLinks(title) {
+            const pageUrl = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent(title);
+
+            const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+            const twUrl = `https://twitter.com/intent/tweet?url=${pageUrl}&text=${text}`;
+            const lnUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${pageUrl}`;
+            const waUrl = `https://api.whatsapp.com/send?text=${text}%20${pageUrl}`;
+
+            // Bind Top Toolbar
+            document.getElementById("shareFB").href = fbUrl;
+            document.getElementById("shareTW").href = twUrl;
+            document.getElementById("shareLN").href = lnUrl;
+            document.getElementById("shareWA").href = waUrl;
+
+            // Bind Bottom Toolbar
+            document.getElementById("shareFBBottom").href = fbUrl;
+            document.getElementById("shareTWBottom").href = twUrl;
+            document.getElementById("shareWABottom").href = waUrl;
+        }
+
+        async function fetchRelatedArticles(category, currentId) {
+            const container = document.getElementById("relatedContainer");
+            try {
+                const q = query(
+                    collection(db, "newsPosts"),
+                    where("category", "==", category),
+                    limit(4)
+                );
+                const querySnapshot = await getDocs(q);
+
+                let related = [];
+                querySnapshot.forEach((docSnap) => {
+                    if (docSnap.id !== currentId) {
+                        related.push({ id: docSnap.id, ...docSnap.data() });
+                    }
+                });
+
+                if (related.length === 0) {
+                    const fallbackQ = query(collection(db, "newsPosts"), limit(4));
+                    const fallbackSnap = await getDocs(fallbackQ);
+                    fallbackSnap.forEach((docSnap) => {
+                        if (docSnap.id !== currentId && related.length < 3) {
+                            related.push({ id: docSnap.id, ...docSnap.data() });
+                        }
+                    });
+                }
+
+                if (related.length === 0) {
+                    container.innerHTML = `<p style="font-size:13px; color:#64748b;">No related stories found.</p>`;
+                    return;
+                }
+
+                container.innerHTML = related.slice(0, 3).map(post => `
+                    <a class="related-post-node" href="reader.html?id=${post.id}">
+                        <img class="related-thumb" src="${post.imageUrl || FALLBACK_IMG}" alt="${post.title || 'Related post'}" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">
+                        <div class="related-meta">
+                            <h4>${post.title || 'Untitled Article'}</h4>
+                            <p>${post.minutesRead || 1} min read</p>
+                        </div>
+                    </a>
+                `).join('');
+
+            } catch (err) {
+                console.error("Error loading related news:", err);
+                container.innerHTML = `<p style="font-size:13px; color:#64748b;">Could not load related stories.</p>`;
+            }
+        }
+
+        // Newsletter Form Binding
+        document.getElementById("newsletterForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            document.getElementById("newsletterSuccess").style.display = "block";
+            e.target.reset();
+        });
+
+        loadArticle();
+    </script>
+</body>
+</html>
