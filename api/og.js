@@ -1,7 +1,9 @@
+import fs from 'fs';
+import path from 'path';
+
 export default async function handler(req, res) {
   const { id } = req.query;
 
-  // Fallback defaults
   let title = "BoonNews | Latest News, Insights & In-Depth Reports";
   let description = "Read full news articles, analysis, and breaking updates on BoonNews.";
   let imageUrl = "https://boonnewsng.vercel.app/boon-news-og-banner.jpg";
@@ -9,7 +11,7 @@ export default async function handler(req, res) {
 
   if (id) {
     try {
-      // Fetch post data directly from Firebase REST API (server-side, fast response)
+      // Fetch post data directly from Firebase REST API
       const firestoreUrl = `https://firestore.googleapis.com/v1/projects/primeintelmedia-e2fe3/databases/(default)/documents/newsPosts/${id}`;
       const response = await fetch(firestoreUrl);
       
@@ -27,40 +29,21 @@ export default async function handler(req, res) {
     }
   }
 
-  // Construct static HTML response with populated Open Graph headers
-  const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>${title} | BoonNews</title>
-    <meta name="description" content="${description}">
+  // Load the original reader.html file
+  const filePath = path.join(process.cwd(), 'reader.html');
+  let html = fs.readFileSync(filePath, 'utf8');
 
-    <!-- Open Graph / Facebook / WhatsApp -->
-    <meta property="og:type" content="article">
-    <meta property="og:site_name" content="BoonNews">
-    <meta property="og:url" content="${pageUrl}">
-    <meta property="og:title" content="${title}">
-    <meta property="og:description" content="${description}">
-    <meta property="og:image" content="${imageUrl}">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="${pageUrl}">
-    <meta name="twitter:title" content="${title}">
-    <meta name="twitter:description" content="${description}">
-    <meta name="twitter:image" content="${imageUrl}">
-
-    <!-- Redirect standard browsers to reader.html if needed -->
-    <script>
-      window.location.href = "/reader.html?id=${id}";
-    </script>
-</head>
-<body>
-    <p>Loading story...</p>
-</body>
-</html>`;
+  // Inject real metadata directly into the HTML head before sending it back
+  html = html
+    .replace(/<title id="metaTitle">.*?<\/title>/, `<title>${title} | BoonNews</title>`)
+    .replace(/content="Loading Article... \| BoonNews"/, `content="${title} | BoonNews"`)
+    .replace(/id="ogTitle" content=".*?"/, `id="ogTitle" content="${title}"`)
+    .replace(/id="ogDesc" content=".*?"/, `id="ogDesc" content="${description}"`)
+    .replace(/id="ogImage" content=".*?"/, `id="ogImage" content="${imageUrl}"`)
+    .replace(/id="ogUrl" content=".*?"/, `id="ogUrl" content="${pageUrl}"`)
+    .replace(/id="twTitle" content=".*?"/, `id="twTitle" content="${title}"`)
+    .replace(/id="twDesc" content=".*?"/, `id="twDesc" content="${description}"`)
+    .replace(/id="twImage" content=".*?"/, `id="twImage" content="${imageUrl}"`);
 
   res.setHeader("Content-Type", "text/html");
   return res.status(200).send(html);
