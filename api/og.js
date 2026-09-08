@@ -4,47 +4,62 @@ import path from 'path';
 export default async function handler(req, res) {
   const { id } = req.query;
 
-  let title = "BoonNews | Latest News, Insights & In-Depth Reports";
-  let description = "Read full news articles, analysis, and breaking updates on BoonNews.";
-  let imageUrl = "https://boonnewsng.vercel.app/boon-news-og-banner.jpg";
-  const pageUrl = `https://boonnewsng.vercel.app/reader.html?id=${id || ''}`;
+  // Fallback metadata defaults
+  let title = "Boon News | Latest News, Insights & In-Depth Reports";
+  let description = "Read full news articles, analysis, and breaking updates on Boon News.";
+  let image = "https://boonnewsng.vercel.app/boon-news-og-banner.jpg";
+  let pageUrl = `https://boonnewsng.vercel.app/reader.html${id ? `?id=${id}` : ''}`;
 
   if (id) {
     try {
-      // Fetch post data directly from Firebase REST API
+      // Fetch article data directly from Firestore REST API (no admin keys needed)
       const firestoreUrl = `https://firestore.googleapis.com/v1/projects/primeintelmedia-e2fe3/databases/(default)/documents/newsPosts/${id}`;
       const response = await fetch(firestoreUrl);
-      
+
       if (response.ok) {
         const data = await response.json();
         const fields = data.fields || {};
 
-        title = fields.title?.stringValue || title;
-        description = fields.summary?.stringValue || 
-                      (fields.content?.stringValue ? fields.content.stringValue.replace(/<[^>]*>?/gm, '').substring(0, 155) : description);
-        imageUrl = fields.imageUrl?.stringValue || imageUrl;
+        const postTitle = fields.title?.stringValue;
+        const postSummary = fields.summary?.stringValue;
+        const postContent = fields.content?.stringValue;
+        const postImage = fields.imageUrl?.stringValue;
+
+        if (postTitle) title = `${postTitle} | Boon News`;
+        
+        if (postSummary) {
+          description = postSummary;
+        } else if (postContent) {
+          description = postContent.replace(/<[^>]*>?/gm, '').substring(0, 155) + '...';
+        }
+
+        if (postImage) image = postImage;
       }
     } catch (err) {
-      console.error("Error fetching metadata server-side:", err);
+      console.error("Error fetching article metadata on server:", err);
     }
   }
 
-  // Load the original reader.html file
-  const filePath = path.join(process.cwd(), 'reader.html');
-  let html = fs.readFileSync(filePath, 'utf8');
+  try {
+    // Read your static reader.html file from root
+    const filePath = path.join(process.cwd(), 'reader.html');
+    let html = fs.readFileSync(filePath, 'utf8');
 
-  // Inject real metadata directly into the HTML head before sending it back
-  html = html
-    .replace(/<title id="metaTitle">.*?<\/title>/, `<title>${title} | BoonNews</title>`)
-    .replace(/content="Loading Article... \| BoonNews"/, `content="${title} | BoonNews"`)
-    .replace(/id="ogTitle" content=".*?"/, `id="ogTitle" content="${title}"`)
-    .replace(/id="ogDesc" content=".*?"/, `id="ogDesc" content="${description}"`)
-    .replace(/id="ogImage" content=".*?"/, `id="ogImage" content="${imageUrl}"`)
-    .replace(/id="ogUrl" content=".*?"/, `id="ogUrl" content="${pageUrl}"`)
-    .replace(/id="twTitle" content=".*?"/, `id="twTitle" content="${title}"`)
-    .replace(/id="twDesc" content=".*?"/, `id="twDesc" content="${description}"`)
-    .replace(/id="twImage" content=".*?"/, `id="twImage" content="${imageUrl}"`);
+    // Replace default meta tags with actual article dynamic meta tags
+    html = html
+      .replace(/<title id="metaTitle">.*?<\/title>/, `<title>${title}</title>`)
+      .replace(/content="Loading Article\.\.\. \| BoonNews"/g, `content="${title}"`)
+      .replace(/content="Read full news articles, analysis, and breaking updates on BoonNews\."/g, `content="${description}"`)
+      .replace(/https:\/\/boonnewsng\.vercel\.app\/boon-news-og-banner\.jpg/g, image)
+      .replace(/content="https:\/\/boonnewsng\.vercel\.app\/reader\.html"/g, `content="${pageUrl}"`);
 
-  res.setHeader("Content-Type", "text/html");
-  return res.status(200).send(html);
+    // Cache the pre-rendered response at Vercel Edge for 10 minutes to ensure rapid responses
+    res.setHeader('Cache-Control', 's-maxage=600, stale-while-revalidate');
+    res.setHeader('Content-Type', 'text/html');
+    return res.status(200).send(html);
+
+  } catch (err) {
+    console.error("Error reading reader.html:", err);
+    return res.status(500).send("Internal Server Error");
+  }
 }
