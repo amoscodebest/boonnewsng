@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Primary Search Meta Tags -->
+    <title>Boon News | Latest News, Insights & In-Depth Reports</title>
+    <meta name="title" content="Boon News | Latest News, Insights & In-Depth Reports">
+    <meta name="description" content="Stay informed with Boon News for real-time headlines, in-depth analysis, and trending stories across business, technology, politics, and culture.">
+    <meta name="keywords" content="Boon News, news, trending news, latest updates, blog, analysis, opinion">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://boonnewsng.vercel.app">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://boonnewsng.vercel.app">
+    <meta property="og:title" content="Boon News | Latest News, Insights & In-Depth Reports">
+    <meta property="og:description" content="Stay informed with Boon News for real-time headlines, in-depth analysis, and trending stories across business, technology, politics, and culture.">
+    <meta property="og:image" content="https://boonnewsng.vercel.app/boon-news-og-banner.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Boon News">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://boonnewsng.vercel.app">
+    <meta name="twitter:title" content="Boon News | Latest News, Insights & In-Depth Reports">
+    <meta name="twitter:description" content="Stay informed with Boon News for real-time headlines, in-depth analysis, and trending stories across business, technology, politics, and culture.">
+    <meta name="twitter:image" content="https://boonnewsng.vercel.app/boon-news-og-banner.jpg">
+
+    <!-- Performance Preconnect Hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://firestore.googleapis.com">
+
+    <!-- Optimized Google Fonts (Trimmed to essential weights + display=swap) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+
+    <!-- SIDEBAR DRAWER OVERLAY & COMPONENT -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+    <aside class="sidebar-drawer" id="sidebarDrawer" aria-label="Sidebar Navigation">
+        <div class="sidebar-header">
+            <a href="index.html" class="logo">Boon<span>News</span></a>
+            <button class="sidebar-close-btn" id="sidebarClose" aria-label="Close Sidebar"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <form class="sidebar-search" id="sidebarSearchForm">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="sidebarSearchInput" placeholder="Search here...">
+        </form>
+
+        <nav>
+            <ul class="sidebar-nav-list">
+                <li><a href="index.html" class="sidebar-nav-link active">Home</a></li>
+                <li><a href="about.html" class="sidebar-nav-link">About Us</a></li>
+                <li><a href="contact.html" class="sidebar-nav-link">Contact Us</a></li>
+                <li><a href="advert.html" class="sidebar-nav-link">Advertise</a></li>
+            </ul>
+        </nav>
+
+        <ul class="sidebar-footer-socials">
+            <li><a href="https://www.facebook.com/profile.php?id=61570604278953" class="sidebar-social-icon" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a></li>
+            <li><a href="https://youtube.com/@boonnews?si=5KrPL-0vLmUCj4Ny" class="sidebar-social-icon" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a></li>
+            <li><a href="#" class="sidebar-social-icon" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a></li>
+            <li><a href="#" class="sidebar-social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a></li>
+        </ul>
+    </aside>
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="site-header">
+        <div class="header-container max-w-7xl">
+            <div class="header-left">
+                <button class="burger-btn" id="sidebarToggle" aria-label="Open Navigation Sidebar"><i class="fa-solid fa-bars"></i></button>
+                <a href="index.html" class="logo">Boon<span>News</span></a>
+                
+                <!-- Persistent Dynamic Search Box Component -->
+                <form class="header-search-box" id="searchForm">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" placeholder="Search news..." autocomplete="off">
+                    <div id="searchSuggestions" class="search-suggestions-dropdown"></div>
+                </form>
+            </div>
+
+            <div class="header-center">
+                <nav class="main-nav">
+                    <ul style="display: flex; gap: 1.5rem;">
+                        <li><a href="index.html" class="nav-link active">Home</a></li>
+                        <li><a href="#" class="nav-link">Lifestyle</a></li>
+                        <li><a href="#" class="nav-link">Travel</a></li>
+                        <li><a href="#" class="nav-link">Post Type</a></li>
+                        <li><a href="#" class="nav-link">NFT</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="header-right">
+                <div class="lang-selector">
+                    <span>ENG</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
+                </div>
+                <div class="header-icons">
+                    <a href="#" class="search-trigger-fallback" aria-label="Search Trigger"><i class="fa-solid fa-magnifying-glass"></i></a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- EXPLICIT SEARCH BOX SECTION AFTER HEADER -->
+    <section class="after-header-search-section">
+        <div class="max-w-7xl">
+            <form class="banner-search-form" id="bannerSearchForm">
+                <div class="banner-search-input-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="bannerSearchInput" placeholder="Search here..." autocomplete="off">
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <main class="max-w-7xl">
+        
+        <!-- HERO GRID SECTION -->
+        <section class="hero-section" aria-label="Featured Stories Grid">
+            <div class="hero-left" id="heroLeftContainer"></div>
+            <div class="hero-right" id="heroRightContainer"></div>
+        </section>
+
+        <!-- TRENDING NEWS SECTION (POPULAR POSTS SLIDER) -->
+        <section style="margin-bottom: 3rem;">
+            <div class="section-header">
+                <div class="section-header-left">
+                    <span class="text-accent sub-label">Popular Posts</span>
+                    <h2>Trending News</h2>
+                </div>
+                <div class="section-header-right">
+                    <div class="slider-controls">
+                        <button id="prevBtn1" class="slider-btn" aria-label="Previous Post Track"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button id="nextBtn1" class="slider-btn" aria-label="Next Post Track"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                    <a href="#" class="more-link">
+                        <span>More Post</span> <i class="fa-solid fa-arrow-right" style="font-size: 10px;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <ul id="trendingContainer" class="slider-container"></ul>
+        </section>
+
+        <!-- EDITOR CHOICE SECTION -->
+        <section class="editor-section">
+            <div class="section-header">
+                <div class="section-header-left">
+                    <span class="text-accent sub-label">Recommended</span>
+                    <h2>Editor Choice</h2>
+                </div>
+                <a href="#" class="more-link"><span>More Recommended Post</span> <i class="fa-solid fa-arrow-right" style="font-size: 10px;"></i></a>
+            </div>
+
+            <ul class="editor-grid" id="editorsChoiceContainer"></ul>
+        </section>
+
+        <!-- RECENT VIDEO POST SECTION -->
+        <section class="video-section">
+            <div class="section-header">
+                <div class="section-header-left">
+                    <span class="text-accent sub-label">Video</span>
+                    <h2>Recent Video Post</h2>
+                </div>
+                <a href="#" class="more-link"><span>More Video Post</span> <i class="fa-solid fa-arrow-right" style="font-size: 10px;"></i></a>
+            </div>
+
+            <div class="video-grid" id="videoContainer"></div>
+        </section>
+
+        <!-- LIGHT ACCENT SLIDER BAND (More to Watch Block) -->
+        <section class="dark-band-section">
+            <div class="max-w-7xl">
+                <div class="section-header" style="border-color: #cbd5e1;">
+                    <div class="section-header-left">
+                        <span class="text-accent sub-label" style="color: #64748b;">Recent Post</span>
+                        <h2>Latest Feed</h2>
+                    </div>
+                    <div class="section-header-right">
+                        <div class="slider-controls">
+                            <button id="prevBtn2" class="slider-btn" style="border-color: #cbd5e1;" aria-label="Previous Watch Section"><i class="fa-solid fa-chevron-left"></i></button>
+                            <button id="nextBtn2" class="slider-btn" style="border-color: #cbd5e1;" aria-label="Next Watch Section"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                        <a href="#" class="more-link"><span>Recent or Latest Post</span> <i class="fa-solid fa-arrow-right" style="font-size: 10px;"></i></a>
+                    </div>
+                </div>
+
+                <ul id="sliderContainer2" class="slider-container"></ul>
+            </div>
+        </section>
+
+        <!-- POPULAR STORIES SECTION -->
+        <section class="stories-section">
+            <div class="section-header">
+                <div class="section-header-left">
+                    <span class="text-accent sub-label">Stories</span>
+                    <h2>Popular Stories</h2>
+                </div>
+                <div class="section-header-right">
+                    <select id="categoryFilter" class="category-select-filter" aria-label="Filter Stories by Category">
+                        <option value="ALL">All Categories</option>
+                    </select>
+                    <a href="#" class="more-link">
+                        <span>Stories Post</span> <i class="fa-solid fa-arrow-right" style="font-size: 10px;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div id="recentStoriesContainer"></div>
+        </section>
+
+        <!-- NEWSLETTER CARD CTA LAYOUT MODULE -->
+        <section class="newsletter-panel" aria-label="Newsletter Signup">
+            <div class="newsletter-left">
+                <h4>Newsletter</h4>
+                <h2>Get notified of top stories and breaking reports</h2>
+            </div>
+            
+            <div class="newsletter-right">
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 0.75rem; width: 100%;">
+                    <div class="email-field-wrapper">
+                        <i class="fa-regular fa-envelope"></i>
+                        <input type="email" placeholder="Email address" class="newsletter-input" aria-label="Email Address Field">
+                    </div>
+                    <label class="consent-label">
+                        <input type="checkbox">
+                        <span>I agree that my submitted data is being collected and stored.</span>
+                    </label>
+                </div>
+                <button class="newsletter-submit-btn">
+                    <span>Subscribe</span> <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- EXPANDED SEMANTIC FAT FOOTER SYSTEM -->
+    <footer class="site-footer">
+        <div class="max-w-7xl footer-grid">
+            <div class="footer-brand-column">
+                <h3><a href="index.html" class="logo">Boon<span>News</span></a></h3>
+                <p>Stay informed with Boon News, your hub for breaking news, sharp commentary, and real-time trending updates.</p>
+            </div>
+
+            <div class="footer-nav-column">
+                <h4>Quick Links</h4>
+                <ul class="footer-links-list">
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="signup.html">Create Account</a></li>
+                    <li><a href="advert.html">Advertise with Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-nav-column">
+                <h4>Legal Menu</h4>
+                <ul class="footer-links-list">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-nav-column">
+                <h4>Connect Space</h4>
+                <ul class="footer-socials-list">
+                    <li><a href="https://www.facebook.com/profile.php?id=61570604278953" class="footer-social-btn" aria-label="Follow on Facebook"><i class="fa-brands fa-facebook"></i></a></li>
+                    <li><a href="https://youtube.com/@boonnews?si=5KrPL-0vLmUCj4Ny" class="footer-social-btn" aria-label="Watch on YouTube"><i class="fa-brands fa-youtube"></i></a></li>
+                    <li><a href="#" class="footer-social-btn" aria-label="Follow us on Twitter"><i class="fa-brands fa-twitter"></i></a></li>
+                    <li><a href="#" class="footer-social-btn" aria-label="Follow on Instagram"><i class="fa-brands fa-instagram"></i></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom max-w-7xl">
+            &copy; 2026 Boon News — All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- JS: SLIDERS & SIDEBAR CONTROL RIG -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebarClose = document.getElementById('sidebarClose');
+            const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+            const sidebarDrawer = document.getElementById('sidebarDrawer');
+
+            const openSidebar = () => {
+                sidebarDrawer.classList.add('active');
+                sidebarBackdrop.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeSidebar = () => {
+                sidebarDrawer.classList.remove('active');
+                sidebarBackdrop.classList.remove('active');
+                document.body.style.overflow = '';
+            };
+
+            if (sidebarToggle) sidebarToggle.addEventListener('click', openSidebar);
+            if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
+            if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', closeSidebar);
+
+            const setupSlider = (containerId, prevId, nextId) => {
+                const container = document.getElementById(containerId);
+                const prevBtn = document.getElementById(prevId);
+                const nextBtn = document.getElementById(nextId);
+
+                if (!container || !prevBtn || !nextBtn) return;
+
+                const getScrollAmount = () => {
+                    const firstCard = container.firstElementChild;
+                    return firstCard ? firstCard.offsetWidth + 20 : 280; 
+                };
+
+                nextBtn.addEventListener('click', () => {
+                    container.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+                });
+
+                prevBtn.addEventListener('click', () => {
+                    container.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+                });
+            };
+
+            setupSlider('trendingContainer', 'prevBtn1', 'nextBtn1');
+            setupSlider('sliderContainer2', 'prevBtn2', 'nextBtn2');
+        });
+    </script>
+
+    <!-- FIRESTORE DATA MODULE WITH LOCAL STORAGE CACHING -->
+   
+<script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
+      import { 
+        getFirestore, collection, getDocs, query, orderBy, limit 
+      } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBfoxEnVep0wX5V_KVS-cd8o5sUMvrFY4c",
+        authDomain: "primeintelmedia-e2fe3.firebaseapp.com",
+        databaseURL: "https://primeintelmedia-e2fe3-default-rtdb.firebaseio.com",
+        projectId: "primeintelmedia-e2fe3",
+        storageBucket: "primeintelmedia-e2fe3.firebasestorage.app",
+        messagingSenderId: "228866357632",
+        appId: "1:228866357632:web:72dc9942f1cd41d857a965",
+        measurementId: "G-G0HRRV932S"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      const CACHE_KEY_POSTS = "boon_news_posts_cache";
+      const CACHE_KEY_AUTHORS = "boon_news_authors_cache";
+      const FALLBACK_IMG = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="900" height="400" viewBox="0 0 900 400"><rect width="100%" height="100%" fill="%23f1f5f9"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%2394a3b8" font-size="20">Media Asset Unavailable</text></svg>';
+
+      let allPosts = [];
+      let authorMap = new Map();
+
+      function getPostTime(post) {
+        if (!post.createdAt) return 0;
+        if (typeof post.createdAt === 'number') return post.createdAt;
+        if (typeof post.createdAt.toMillis === 'function') return post.createdAt.toMillis();
+        if (post.createdAt.seconds) return post.createdAt.seconds * 1000;
+        return new Date(post.createdAt).getTime() || 0;
+      }
+
+      function getPostViews(post) {
+        return Number(post.views || post.viewCount || 0);
+      }
+
+      function formatDate(post) {
+        const rawTime = getPostTime(post);
+        if (!rawTime) return '';
+        return new Date(rawTime).toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric'
+        });
+      }
+
+      function getAuthorName(post) {
+        if (post.authorName) return post.authorName;
+        const key = post.authorId || post.author || post.authorRef;
+        if (key && authorMap.has(key)) return authorMap.get(key);
+        if (typeof post.author === 'string' && post.author.length > 0) return post.author;
+        return 'Editorial';
+      }
+
+      window.navigateToArticle = (id) => {
+        window.location.href = `reader.html?id=${id}`;
+      };
+
+      // FAST SEARCH INITIALIZATION
+      function setupSearch() {
+        const searchForm = document.getElementById("searchForm");
+        const searchInput = document.getElementById("searchInput");
+        const searchSuggestions = document.getElementById("searchSuggestions");
+        const sidebarSearchForm = document.getElementById("sidebarSearchForm");
+        const sidebarSearchInput = document.getElementById("sidebarSearchInput");
+        const bannerSearchForm = document.getElementById("bannerSearchForm");
+        const bannerSearchInput = document.getElementById("bannerSearchInput");
+
+        const executeSearch = (term) => {
+            if (term) window.location.href = `searched.html?q=${encodeURIComponent(term)}`;
+        };
+
+        if (searchForm && searchInput) {
+            searchForm.addEventListener("submit", (e) => {
+              e.preventDefault();
+              executeSearch(searchInput.value.trim());
+            });
+
+            searchInput.addEventListener("input", (e) => {
+              const term = e.target.value.toLowerCase().trim();
+              if (!term || !searchSuggestions) {
+                if (searchSuggestions) {
+                    searchSuggestions.style.display = "none";
+                    searchSuggestions.innerHTML = "";
+                }
+                return;
+              }
+
+              const matches = allPosts.filter(post => {
+                const title = (post.title || "").toLowerCase();
+                const category = (post.category || "").toLowerCase();
+                const author = getAuthorName(post).toLowerCase();
+                return title.includes(term) || category.includes(term) || author.includes(term);
+              }).slice(0, 5);
+
+              if (matches.length === 0) {
+                searchSuggestions.innerHTML = `<div style="padding: 0.75rem; color: #64748b; font-size: 0.8rem;">No matches found. Press Enter to search.</div>`;
+              } else {
+                searchSuggestions.innerHTML = matches.map(post => `
+                  <div class="suggestion-item" onclick="navigateToArticle('${post.id}')">
+                    <img class="suggestion-thumb" src="${post.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src=FALLBACK_IMG;" alt="${post.title}">
+                    <div style="overflow: hidden;">
+                      <div style="font-weight: 700; color: #0f172a; font-size: 0.8rem; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${post.title}</div>
+                      <span class="text-accent" style="font-size: 0.65rem; text-transform: uppercase; font-weight: 700;">${post.category || 'News'}</span>
+                    </div>
+                  </div>
+                `).join('');
+              }
+              searchSuggestions.style.display = "block";
+            });
+
+            document.addEventListener("click", (e) => {
+              if (searchSuggestions && !searchForm.contains(e.target) && !searchSuggestions.contains(e.target)) {
+                searchSuggestions.style.display = "none";
+              }
+            });
+        }
+
+        if (bannerSearchForm && bannerSearchInput) {
+            bannerSearchForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                executeSearch(bannerSearchInput.value.trim());
+            });
+        }
+
+        if (sidebarSearchForm && sidebarSearchInput) {
+            sidebarSearchForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                executeSearch(sidebarSearchInput.value.trim());
+            });
+        }
+      }
+
+      // STALE-WHILE-REVALIDATE CACHING ENGINE
+      async function initDataEngine() {
+        // 1. Instant Cache Load
+        const cachedPosts = localStorage.getItem(CACHE_KEY_POSTS);
+        const cachedAuthors = localStorage.getItem(CACHE_KEY_AUTHORS);
+
+        if (cachedAuthors) {
+          try {
+            const arr = JSON.parse(cachedAuthors);
+            authorMap = new Map(arr);
+          } catch(e) {}
+        }
+
+        if (cachedPosts) {
+          try {
+            allPosts = JSON.parse(cachedPosts);
+            renderPage();
+            populateCategoryFilter();
+            setupSearch();
+          } catch (e) {}
+        }
+
+        // 2. Background Fresh Fetch
+        try {
+          // Parallel network requests
+          const authorsPromise = getDocs(collection(db, "authors"));
+          const postsPromise = getDocs(query(collection(db, "newsPosts"), orderBy("createdAt", "desc"), limit(40)));
+
+          const [authorsSnap, postsSnap] = await Promise.all([authorsPromise, postsPromise]);
+
+          authorMap.clear();
+          authorsSnap.forEach(docSnap => {
+            const data = docSnap.data();
+            authorMap.set(docSnap.id, data.name || data.displayName || data.fullName || 'Editorial');
+          });
+          localStorage.setItem(CACHE_KEY_AUTHORS, JSON.stringify(Array.from(authorMap.entries())));
+
+          const fetchedPosts = [];
+          postsSnap.forEach((docSnap) => {
+            const p = docSnap.data();
+            fetchedPosts.push({
+              id: docSnap.id,
+              title: p.title || '',
+              category: p.category || '',
+              imageUrl: p.imageUrl || '',
+              isFeatured: !!p.isFeatured,
+              postType: p.postType || 'standard',
+              views: p.views || p.viewCount || 0,
+              minutesRead: p.minutesRead || 1,
+              authorName: getAuthorName(p),
+              createdAt: getPostTime(p)
+            });
+          });
+
+          allPosts = fetchedPosts.sort((a, b) => getPostTime(b) - getPostTime(a));
+          localStorage.setItem(CACHE_KEY_POSTS, JSON.stringify(allPosts));
+
+          // Re-render UI with fresh network data
+          renderPage();
+          populateCategoryFilter();
+          setupSearch();
+
+        } catch (err) {
+          console.error("Firestore revalidation error:", err);
+        }
+      }
+
+      function renderPage() {
+        renderHeroSection();
+        renderTrending();
+        renderEditorsChoice();
+        renderVideoFeed();
+        renderRecentSlider();
+        renderRecentStories();
+      }
+
+      // 1. HERO SECTION
+      function renderHeroSection() {
+        const heroLeft = document.getElementById("heroLeftContainer");
+        const heroRight = document.getElementById("heroRightContainer");
+        if (!heroLeft || !heroRight) return;
+
+        const featuredPosts = allPosts.filter(p => p.isFeatured);
+        const displayPosts = featuredPosts.length > 0 ? featuredPosts : allPosts;
+
+        if (displayPosts.length === 0) return;
+
+        const mainPost = displayPosts[0];
+        const postDate = formatDate(mainPost);
+        const author = getAuthorName(mainPost);
+
+        heroLeft.setAttribute('onclick', `navigateToArticle('${mainPost.id}')`);
+        heroLeft.innerHTML = `
+          <div class="hero-left-img-wrapper">
+            <img src="${mainPost.imageUrl || FALLBACK_IMG}" fetchpriority="high" onerror="this.onerror=null; this.src=FALLBACK_IMG;" alt="${mainPost.title}" class="hero-left-bg"> 
+          </div>
+          <div class="hero-left-body">
+            <div class="hero-left-meta">
+              <span class="text-accent">${mainPost.category || 'Featured'}</span>
+              <span>•</span>
+              <span class="author-name">By ${author}</span>
+              ${postDate ? `<span>•</span><span>${postDate}</span>` : ''}
+            </div>
+            <h2 class="hero-left-title"><a href="reader.html?id=${mainPost.id}" style="color: #222;" onclick="event.stopPropagation();">${mainPost.title}</a></h2>
+          </div>
+        `;
+
+        const rightPosts = displayPosts.slice(1, 3);
+        heroRight.innerHTML = `
+          <ul style="display: flex; flex-direction: column; gap: 1.5rem;">
+            ${rightPosts.map((post, idx) => `
+              <li class="side-post" onclick="navigateToArticle('${post.id}')">
+                <div class="side-img-frame">
+                  <img src="${post.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src=FALLBACK_IMG;" alt="${post.title}" class="img-cover">
+                </div>
+                <div>
+                  <span class="text-accent side-post-tag">${post.category || 'News'}</span>
+                  <h2><a href="reader.html?id=${post.id}" class="post-title-link" onclick="event.stopPropagation();">${post.title}</a></h2>
+                </div>
+              </li>
+              ${idx < rightPosts.length - 1 ? '<li class="wavy-divider"></li>' : ''}
+            `).join('')}
+          </ul>
+        `;
+      }
+
+      // 2. TRENDING SECTION
+      function renderTrending() {
+        const container = document.getElementById("trendingContainer");
+        if (!container) return;
+
+        const trendingPosts = [...allPosts]
+          .sort((a, b) => getPostViews(b) - getPostViews(a))
+          .slice(0, 8);
+
+        if (trendingPosts.length === 0) return;
+
+        container.innerHTML = trendingPosts.map(post => `
+          <li class="slider-card" onclick="navigateToArticle('${post.id}')">
+            <div class="card-img-wrapper">
+              <span class="bolt-badge"><i class="fa-solid fa-bolt"></i></span>
+              <img src="${post.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src=FALLBACK_IMG;" alt="${post.title}" class="img-cover">
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="text-accent">${post.category || 'Trending'}</span>
+                <span>•</span>
+                <span>By ${getAuthorName(post)}</span>
+              </div>
+              <h3 class="card-title">
+                <a href="reader.html?id=${post.id}" class="post-title-link" onclick="event.stopPropagation();">${post.title}</a>
+              </h3>
+              <div class="card-stats">
+                <span><i class="fa-solid fa-chart-simple"></i> ${getPostViews(post)}</span>
+                <span><i class="fa-regular fa-clock"></i> ${post.minutesRead || 1}m read</span>
+              </div>
+            </div>
+          </li>
+        `).join('');
+      }
+
+      // 3. EDITOR'S CHOICE
+      function renderEditorsChoice() {
+        const container = document.getElementById("editorsChoiceContainer");
+        if (!container) return;
+
+        const items = allPosts.filter(p => p.postType === 'editor-choice');
+        if (items.length === 0) return;
+
+        container.innerHTML = items.map((post, index) => `
+          <li class="editor-item" onclick="navigateToArticle('${post.id}')">
+            <div class="num-circle">
+              <img src="${post.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src=FALLBACK_IMG;" alt="${post.title}">
+              <span>0${index + 1}</span>
+            </div>
+            <div class="item-details">
+              <div class="card-meta">
+                <span class="text-accent">${post.category || 'Choice'}</span>
+                <span>•</span>
+                <span>By ${getAuthorName(post)}</span>
+              </div>
+              <h4><a href="reader.html?id=${post.id}" class="post-title-link" onclick="event.stopPropagation();">${post.title}</a></h4>
+            </div>
+          </li>
+        `).join('');
+      }
+
+      // 4. VIDEO FEED
+      function renderVideoFeed() {
+        const container = document.getElementById("videoContainer");
+        if (!container) return;
+
+        const items = allPosts.filter(p => p.postType === 'video');
+        if (items.length === 0) return;
+
+        const featuredVideo = items[0];
+        const sidebarVideos = items.slice(1, 3);
+
+        const featuredHtml = `
+          <div class="video-large-featured" onclick="navigateToArticle('${featuredVideo.id}')">
+            <div class="video-player-container">
+              <img src="${featuredVideo.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src=FALLBACK_IMG;" alt="${featuredVideo.title}" class="video-bg">
+              <div class="play-btn-circle"><i class="fa-solid fa-play"></i></div>
+            </div>
+            <div class="meta-text" style="margin-top: 1.25rem;">
+              <span class="text-accent">${featuredVideo.category || 'Video'}</span>
+              <span style="color: #64748b;">• By ${getAuthorName(featuredVideo)}</span>
+            </div>
+            <h2><a href="reader.html?id=${featuredVideo.id}" class="post-title-link" onclick="event.stopPropagation();">${featuredVideo.title}</a></h2>
+          </div>
+        `;
+
+        const sidebarHtml = sidebarVideos.length > 0 ? `
+          <ul class="video-sidebar-list">
+            ${sidebarVideos.map((video, idx) => `
+              <li class="video-row-item" onclick="navigateToArticle('${video.id}')">
+                <div class="video-mini-thumb">
+                  <img src="${video.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src=FALLBACK_IMG;" alt="${video.title}">
+                  <div class="mini-play-btn"><i class="fa-solid fa-play"></i></div>
+                </div>
+                <div>
+                  <div class="card-meta">
+                    <span class="text-accent">${video.category || 'Video'}</span>
+                    <span>• By ${getAuthorName(video)}</span>
+                  </div>
+                  <h3><a href="reader.html?id=${video.id}" class="post-title-link" onclick="event.stopPropagation();">${video.title}</a></h3>
+                </div>
+              </li>
+              ${idx < sidebarVideos.length - 1 ? '<li class="wavy-divider"></li>' : ''}
+            `).join('')}
+          </ul>
+        ` : '';
+
+        container.innerHTML = featuredHtml + sidebarHtml;
+      }
+
+      // 5. RECENT POSTS SLIDER
+      function renderRecentSlider() {
+        const container = document.getElementById("sliderContainer2");
+        if (!container) return;
+
+        const recentPosts = allPosts.slice(0, 8);
+        if (recentPosts.length === 0) return;
+
+        container.innerHTML = recentPosts.map(post => `
+          <li class="slider-card" style="background-color: #ffffff;" onclick="navigateToArticle('${post.id}')">
+            <div class="card-img-wrapper">
+              <span class="bolt-badge"><i class="fa-solid fa-bolt"></i></span>
+              <img src="${post.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src=FALLBACK_IMG;" alt="${post.title}" class="img-cover">
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="text-accent">${post.category || 'General'}</span>
+                <span>•</span>
+                <span>By ${getAuthorName(post)}</span>
+              </div>
+              <h3 class="card-title">
+                <a href="reader.html?id=${post.id}" class="post-title-link" onclick="event.stopPropagation();">${post.title}</a>
+              </h3>
+            </div>
+          </li>
+        `).join('');
+      }
+
+      // 6. POPULAR STORIES FEED
+      function renderRecentStories(selectedCategory = 'ALL') {
+        const container = document.getElementById("recentStoriesContainer");
+        if (!container) return;
+
+        let items = allPosts.filter(p => p.postType === 'standard' || !p.postType);
+
+        if (selectedCategory !== 'ALL') {
+          items = items.filter(p => p.category === selectedCategory);
+        }
+
+        if (items.length === 0) return;
+
+        const topPosts = items.slice(0, 2);
+        const bottomPosts = items.slice(2, 6);
+
+        const topSplitHtml = `
+          <ul class="stories-top-split">
+            ${topPosts.map(post => `
+              <li class="story-large-card" onclick="navigateToArticle('${post.id}')">
+                <div class="story-banner-frame">
+                  <img src="${post.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src=FALLBACK_IMG;" alt="${post.title}" class="img-cover">
+                </div>
+                <div class="meta-text">
+                  <span class="text-accent">${post.category || 'Story'}</span>
+                  <span style="color: #64748b;">• By ${getAuthorName(post)}</span>
+                </div>
+                <h2><a href="reader.html?id=${post.id}" class="post-title-link" onclick="event.stopPropagation();">${post.title}</a></h2>
+              </li>
+            `).join('')}
+          </ul>
+        `;
+
+        const bottomGridHtml = bottomPosts.length > 0 ? `
+          <ul class="stories-bottom-grid">
+            ${bottomPosts.map(post => `
+              <li class="story-mini-card" onclick="navigateToArticle('${post.id}')">
+                <div class="story-thumb-frame">
+                  <img src="${post.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src=FALLBACK_IMG;" alt="${post.title}" class="img-cover">
+                </div>
+                <div class="card-meta">
+                  <span class="text-accent">${post.category || 'Story'}</span>
+                  <span>• By ${getAuthorName(post)}</span>
+                </div>
+                <h3><a href="reader.html?id=${post.id}" class="post-title-link" onclick="event.stopPropagation();">${post.title}</a></h3>
+              </li>
+            `).join('')}
+          </ul>
+        ` : '';
+
+        container.innerHTML = topSplitHtml + bottomGridHtml;
+      }
+
+      function populateCategoryFilter() {
+        const filter = document.getElementById("categoryFilter");
+        if (!filter) return;
+
+        const categories = [...new Set(allPosts.map(p => p.category).filter(Boolean))];
+        filter.innerHTML = `<option value="ALL">All Categories</option>` + 
+          categories.map(c => `<option value="${c}">${c}</option>`).join('');
+
+        filter.addEventListener("change", (e) => renderRecentStories(e.target.value));
+      }
+
+      initDataEngine();
+    </script> 
+
+</body>
+</html>
