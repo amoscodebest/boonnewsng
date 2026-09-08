@@ -1,72 +1,102 @@
-import fs from 'fs';
-import path from 'path';
+export const config = {
+  runtime: 'edge', // Runs on Vercel's Edge Network for instant response times
+};
 
-export default async function handler(req, res) {
-  const { id } = req.query;
+export default async function handler(request) {
+  const { searchParams } = new URL(request.url);
+  const articleId = searchParams.get('id');
+  const baseUrl = 'https://boonnewsng.vercel.app';
+  const firebaseProjectId = 'primeintelmedia-e2fe3';
 
-  // Fallback metadata defaults
-  let title = "Boon News | Latest News, Insights & In-Depth Reports";
-  let description = "Read full news articles, analysis, and breaking updates on Boon News.";
-  let image = "https://boonnewsng.vercel.app/boon-news-og-banner.jpg";
-  let pageUrl = `https://boonnewsng.vercel.app/reader.html${id ? `?id=${id}` : ''}`;
+  // 1. Fetch static reader.html template via URL
+  const htmlResponse = await fetch(`${baseUrl}/reader.html`);
+  let html = await htmlResponse.text();
 
-  if (id) {
-    try {
-      // Fetch article data directly from Firestore REST API
-      const firestoreUrl = `https://firestore.googleapis.com/v1/projects/primeintelmedia-e2fe3/databases/(default)/documents/newsPosts/${id}`;
-      const response = await fetch(firestoreUrl);
-
-      if (response.ok) {
-        const data = await response.json();
-        const fields = data.fields || {};
-
-        const postTitle = fields.title?.stringValue;
-        const postSummary = fields.summary?.stringValue;
-        const postContent = fields.content?.stringValue;
-        const postImage = fields.imageUrl?.stringValue;
-
-        if (postTitle) title = `${postTitle} | Boon News`;
-        
-        if (postSummary) {
-          description = postSummary;
-        } else if (postContent) {
-          description = postContent.replace(/<[^>]*>?/gm, '').substring(0, 155) + '...';
-        }
-
-        if (postImage) image = postImage;
-      }
-    } catch (err) {
-      console.error("Error fetching article metadata on server:", err);
-    }
+  // Return base template if no article ID is present
+  if (!articleId) {
+    return new Response(html, {
+      headers: { 'content-type': 'text/html; charset=utf-8' },
+    });
   }
 
   try {
-    const filePath = path.join(process.cwd(), 'reader.html');
-    let html = fs.readFileSync(filePath, 'utf8');
+    // 2. Fetch raw article data from Firestore REST API
+    const firestoreUrl = `https://firestore.googleapis.com/v1/projects/${firebaseProjectId}/databases/(default)/documents/newsPosts/${articleId}`;
+    const res = await fetch(firestoreUrl);
 
-    // Replace fallback tags and inject standard Open Graph image dimensions
-    html = html
-      .replace(/<title id="metaTitle">.*?<\/title>/, `<title>${title}</title>`)
-      .replace(/content="Loading Article\.\.\. \| BoonNews"/g, `content="${title}"`)
-      .replace(/content="Read full news articles, analysis, and breaking updates on BoonNews\."/g, `content="${description}"`)
-      .replace(/https:\/\/boonnewsng\.vercel\.app\/boon-news-og-banner\.jpg/g, image)
-      .replace(/content="https:\/\/boonnewsng\.vercel\.app\/reader\.html"/g, `content="${pageUrl}"`);
+    if (res.ok) {
+      const data = await res.json();
+      const fields = data.fields || {};
 
-    // Ensure explicit image dimensions exist in HTML head
-    if (!html.includes('og:image:width')) {
-      const extraTags = `
+      // Map Firestore fields with safe fallbacks
+      const rawTitle = fields.title?.stringValue || 'Boon News';
+      const title = `${rawTitle} | BoonNews`;
+      const summary = fields.summary?.stringValue || 
+                      fields.content?.stringValue?.replace(/<[^>]*>?/gm, '').substring(0, 155) || 
+                      'Read full news articles, analysis, and breaking updates on BoonNews.';
+      const image = fields.imageUrl?.stringValue || `${baseUrl}/boon-news-og-banner.jpg`;
+      const author = fields.authorName?.stringValue || fields.author?.stringValue || 'BoonNews Editorial';
+      const currentUrl = `${baseUrl}/reader.html?id=${articleId}`;
+
+      // 3. Inject meta tags targeted by precise IDs matching reader.html
+      html = html
+        .replace(/<title id="metaTitle">.*?<\/title>/, `<title id="metaTitle">${title}</title>`)
+        .replace(/id="metaTitleTag" content=".*?"/, `id="metaTitleTag" content="${title}"`)
+        .replace(/id="metaDesc" content=".*?"/, `id="metaDesc" content="${summary}"`)
+        .replace(/id="metaCanonical" href=".*?"/, `id="metaCanonical" href="${currentUrl}"`)
+        .replace(/id="ogTitle" content=".*?"/, `id="ogTitle" content="${title}"`)
+        .replace(/id="ogDesc" content=".*?"/, `id="ogDesc" content="${summary}"`)
+        .replace(/id="ogImage" content=".*?"/, `id="ogImage" content="${image}"`)
+        .replace(/id="ogUrl" content=".*?"/, `id="ogUrl" content="${currentUrl}"`)
+        .replace(/id="twTitle" content=".*?"/, `id="twTitle" content="${title}"`)
+        .replace(/id="twDesc" content=".*?"/, `id="twDesc" content="${summary}"`)
+        .replace(/id="twImage" content=".*?"/, `id="twImage" content="${image}"`)
+        .replace(/id="twUrl" content=".*?"/, `id="twUrl" content="${currentUrl}"`);
+
+      // Ensure explicit image dimensions exist for Facebook scraper
+      if (!html.includes('og:image:width')) {
+        const dimensions = `
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-      `;
-      html = html.replace('</head>', `${extraTags}\n</head>`);
+        `;
+        html = html.replace('</head>', `${dimensions}\n</head>`);
+      }
+
+      // 4. Update JSON-LD Schema
+      const updatedSchema = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "NewsArticle",
+        "headline": rawTitle,
+        "image": [image],
+        "description": summary,
+        "author": {
+          "@type": "Person",
+          "name": author
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "BoonNews",
+          "logo": {
+            "@type": "ImageObject",
+            "url": `${baseUrl}/boon-news-og-banner.jpg`
+          }
+        }
+      });
+
+      html = html.replace(
+        /<script type="application\/ld\+json" id="articleSchema">.*?<\/script>/s,
+        `<script type="application/ld+json" id="articleSchema">${updatedSchema}</script>`
+      );
     }
-
-    res.setHeader('Cache-Control', 's-maxage=600, stale-while-revalidate');
-    res.setHeader('Content-Type', 'text/html');
-    return res.status(200).send(html);
-
   } catch (err) {
-    console.error("Error reading reader.html:", err);
-    return res.status(500).send("Internal Server Error");
+    console.error('Error fetching Firestore metadata on Edge:', err);
   }
+
+  // 5. Return updated document with cache headers
+  return new Response(html, {
+    headers: {
+      'content-type': 'text/html; charset=utf-8',
+      'cache-control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=86400'
+    },
+  });
 }
